@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty plugin="openshift-sync@0.0.14">
+      <uid></uid>
+      <namespace></namespace>
+      <name></name>
+      <resourceVersion></resourceVersion>
+      <contextDir></contextDir>
+    </io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>2</daysToKeep>
+        <numToKeep>5</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>SKIP_TLS</name>
+          <description>https://github.com/openshift/jenkins-plugin#certificates-and-encryption</desc
+ription>
+          <defaultValue>true</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <com.openshift.jenkins.plugins.pipeline.OpenShiftCreator plugin="openshift-pipeline@1.0.31">
+      <apiURL>https://192.168.2.91:8443</apiURL>
+      <namespace>default</namespace>
+      <authToken>dM5ip5fpvpNBJzDvk-qWn68NZz8bRro-LfX5rh5PdGI</authToken>
+      <verbose>true</verbose>
+      <jsonyaml>---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota
+spec:
+  hard:
+    memory: 100Gi
+    cpu: &apos;200&apos;
+    pods: &apos;100&apos;
+    services: &apos;50&apos;
+    replicationcontrollers: &apos;50&apos;
+    resourcequotas: &apos;10&apos;</jsonyaml>
+    </com.openshift.jenkins.plugins.pipeline.OpenShiftCreator>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
