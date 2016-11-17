@@ -8,9 +8,14 @@
 
 package com.primeton.devops.dff.job.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHeader;
 
 import com.primeton.devops.dff.job.Job;
 import com.primeton.devops.dff.job.JobApi;
@@ -33,11 +38,14 @@ public class JobApiImpl implements JobApi {
 		if (StringUtils.isEmpty(jobName) || StringUtils.isEmpty(jobConfig)) {
 			return null;
 		}
-		String url = HttpClientUtil.getFullURL("createItem?name=" + jobName); //$NON-NLS-1$
+		String url = HttpClientUtil.getFullURL("/createItem?name=" + jobName); //$NON-NLS-1$
 		StringEntity entity = new StringEntity(jobConfig, ContentType.APPLICATION_XML);
 		
+		Map<String, String> header = new HashMap<>();
+		header.put("Accept", "application/json");
+		
 		try {
-			HttpResult result = HttpClientUtil.sendRequest("POST", url, null, entity);
+			HttpResult result = HttpClientUtil.sendRequest("POST", url, header, entity);
 			System.out.println(result);
 		} catch (Exception e) {
 			throw new JobException(String.format("Create job '%s' error.", jobName), e);
