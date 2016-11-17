@@ -16,5 +16,5 @@ package com.primeton.devops.dff.job;
 public interface JobApi {
 	
 	Job createJob(String jobName, String jobConfig) throws JobException;
-
+	
 }

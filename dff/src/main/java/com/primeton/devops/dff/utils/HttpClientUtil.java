@@ -8,18 +8,21 @@
 
 package com.primeton.devops.dff.utils;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.net.URI;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.AuthCache;
-import org.apache.http.client.CredentialsProvider;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
@@ -27,14 +30,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicAuthCache;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
@@ -54,7 +54,39 @@ public class HttpClientUtil implements Constants {
 	private HttpClientUtil() {
 	}
 	
-	private static CloseableHttpClient getClient() {
+	public static class HttpClient {
+		
+		private CloseableHttpClient client;
+		private String session;
+		
+		/**
+		 * @param client
+		 * @param session
+		 */
+		public HttpClient(CloseableHttpClient client, String session) {
+			super();
+			this.client = client;
+			this.session = session;
+		}
+
+		/**
+		 * @return Returns the client.
+		 */
+		public CloseableHttpClient getClient() {
+			return client;
+		}
+
+		/**
+		 * @return Returns the session.
+		 */
+		public String getSession() {
+			return session;
+		}
+		
+	}
+	
+	private static HttpClient getClient() {
+		/*
 		URI uri = URI.create(JENKINS_URL);
 		HttpHost host = new HttpHost(uri.getHost(), uri.getPort(), uri.getScheme());
 		CredentialsProvider credsProvider = new BasicCredentialsProvider();
@@ -67,16 +99,51 @@ public class HttpClientUtil implements Constants {
 		BasicScheme basicAuth = new BasicScheme();
 		authCache.put(host, basicAuth);
 		CloseableHttpClient client = HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
-		// HttpGet httpGet = new HttpGet(uri);
+		HttpGet httpGet = new HttpGet(uri);
 		// Add AuthCache to the execution context
 		HttpClientContext localContext = HttpClientContext.create();
 		localContext.setAuthCache(authCache);
 
-		// HttpResponse response = client.execute(host, httpGet, localContext);
-		// return EntityUtils.toString(response.getEntity());
-		return client;
+		try {
+			HttpResponse response = client.execute(host, httpGet, localContext);
+			System.out.println(EntityUtils.toString(response.getEntity()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		*/
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpPost request = new HttpPost(getFullURL("/j_acegi_security_check")); //$NON-NLS-1$
+		List<NameValuePair> parameters = new ArrayList<>();
+		parameters.add(new BasicNameValuePair("j_username", JENKINS_USER)); //$NON-NLS-1$
+		parameters.add(new BasicNameValuePair("j_password", JENKINS_PASS)); //$NON-NLS-1$
+		UrlEncodedFormEntity entity = null;
+		try {
+			entity = new UrlEncodedFormEntity(parameters);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		request.setEntity(entity);
+		String session = null;
+		try {
+			HttpResponse response = client.execute(request);
+			Header header = response.getFirstHeader("Set-Cookie");
+			for (HeaderElement e : header.getElements()) {
+				if (e.getName().startsWith("JSESSIONID")) {
+					session = e.getValue();
+				}
+			}
+			System.out.println(response.getStatusLine().getStatusCode());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return new HttpClient(client, session);
 	}
 	
+	public static void main(String[] args) {
+		getClient();
+	}
 
 	/**
 	 * 
@@ -101,7 +168,8 @@ public class HttpClientUtil implements Constants {
 	 */
 	public static HttpResult sendRequest(String method, String url,
 			Map<String, String> headers) throws Exception {
-		CloseableHttpClient client = getClient();
+		HttpClient httpClient = getClient();
+		CloseableHttpClient client = httpClient.getClient();
 		if (null == client || StringUtils.isEmpty(url)) {
 			return null;
 		}
@@ -116,6 +184,8 @@ public class HttpClientUtil implements Constants {
 				request.addHeader(name, headers.get(name));
 			}
 		}
+		// jenkins
+//		request.addHeader("Jenkins-Crumb", httpClient.getSession());
 		
 		CloseableHttpResponse response = null;
 		try {
@@ -144,7 +214,8 @@ public class HttpClientUtil implements Constants {
 	 */
 	public static HttpResult sendRequest(String method, String url,
 			Map<String, String> headers, Object entity) throws Exception {
-		CloseableHttpClient client = getClient();
+		HttpClient httpClient = getClient();
+		CloseableHttpClient client = httpClient.getClient();
 		if (null == client || StringUtils.isEmpty(url)) {
 			return null;
 		}
@@ -164,6 +235,9 @@ public class HttpClientUtil implements Constants {
 				request.addHeader(name, headers.get(name));
 			}
 		}
+		// jenkins
+//		request.addHeader("Jenkins-Crumb", httpClient.getSession());
+		
 		if (null != entity) {
 			if (entity instanceof HttpEntity) {
 				request.setEntity((HttpEntity) entity);
@@ -262,6 +336,34 @@ public class HttpClientUtil implements Constants {
 		public HttpResult(int status, String content) {
 			super();
 			this.status = status;
+			this.content = content;
+		}
+
+		/**
+		 * @return Returns the status.
+		 */
+		public int getStatus() {
+			return status;
+		}
+
+		/**
+		 * @param status The status to set.
+		 */
+		public void setStatus(int status) {
+			this.status = status;
+		}
+
+		/**
+		 * @return Returns the content.
+		 */
+		public String getContent() {
+			return content;
+		}
+
+		/**
+		 * @param content The content to set.
+		 */
+		public void setContent(String content) {
 			this.content = content;
 		}
 
