@@ -34,7 +34,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 	private String jobName = "job-" + uid; //$NON-NLS-1$
 	private String jobName2 = "clean-job-" + uid; //$NON-NLS-1$
 	
-	private String resourceName = "ResourceQuota-" + uid; //$NON-NLS-1$
+	private String resourceName = "quota" + uid; //$NON-NLS-1$
 	// before execute TestCase, new openshift project yyyyyyyy
 	private String namespace = "yyyyyyyy"; //$NON-NLS-1$
 
