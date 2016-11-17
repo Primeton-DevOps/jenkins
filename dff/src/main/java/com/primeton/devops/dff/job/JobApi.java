@@ -15,6 +15,27 @@ package com.primeton.devops.dff.job;
  */
 public interface JobApi {
 	
+	/**
+	 * 
+	 * @param jobName
+	 * @param jobConfig
+	 * @return
+	 * @throws JobException
+	 */
 	Job createJob(String jobName, String jobConfig) throws JobException;
+	
+	/**
+	 * 
+	 * @param jobName
+	 * @throws JobException
+	 */
+	void deleteJob(String jobName) throws JobException;
+	
+	/**
+	 * 
+	 * @param jobName
+	 * @throws JobException
+	 */
+	void runJob(String jobName) throws JobException;
 	
 }

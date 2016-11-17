@@ -13,8 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.primeton.devops.dff.job.JobApi;
+import com.primeton.devops.dff.job.JobException;
 import com.primeton.devops.dff.utils.ServiceLoaderUtil;
 import com.primeton.devops.dff.utils.VelocityUtil;
 
@@ -25,9 +27,10 @@ import com.primeton.devops.dff.utils.VelocityUtil;
  */
 public class JobCreateTestCase extends AbstractTestCase {
 	
-	private final String uid = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date());
+	private final String uid = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date()); //$NON-NLS-1$
 	
-	private String jobName = "job-" + uid; //$NON-NLS-1$ //$NON-NLS-2$
+	private String jobName = "job-" + uid; //$NON-NLS-1$
+	private String jobName2 = "clean-job-" + uid; //$NON-NLS-1$
 	
 	private String resourceName = "ResourceQuota-" + uid;
 
@@ -44,6 +47,10 @@ public class JobCreateTestCase extends AbstractTestCase {
 		
 		JobApi api = ServiceLoaderUtil.load(JobApi.class);
 		api.createJob(jobName, jobConfig);
+		
+		api.runJob(jobName);
+		
+		TimeUnit.SECONDS.sleep(30);
 	}
 	
 	/**
@@ -112,7 +119,48 @@ public class JobCreateTestCase extends AbstractTestCase {
 		System.out.println(yaml);
 		System.out.println();
 		
-		return yaml.replaceAll("'", "&apos;");
+		return yaml.replaceAll("'", "\\&apos;");
+	}
+	
+	/**
+	 * 
+	 * @throws FileNotFoundException
+	 * @throws JobException
+	 */
+	private void createDeleteResourceQuotaJob() throws FileNotFoundException, JobException {
+		String template = getTemplateAsString("classpath:/templates/job/DeleteResourcePipelineJobTemplate.velocity.xml");
+		System.err.println(template);
+		
+		Map<String, Object> context = new HashMap<>();
+		Map<String, Object> jobSettings = new HashMap<>();
+		Map<String, Object> openshiftSettings = new HashMap<>();
+		Map<String, Object> piplelineSettings = new HashMap<>();
+		
+		context.put("job", jobSettings);
+		context.put("openshift", openshiftSettings);
+		context.put("pipleline", piplelineSettings);
+		
+		jobSettings.put("daysToKeep", 3);
+		jobSettings.put("numToKeep", "10");
+		
+		openshiftSettings.put("url", "https://192.168.2.91:8443");
+		openshiftSettings.put("authToken", "dM5ip5fpvpNBJzDvk-qWn68NZz8bRro-LfX5rh5PdGI");
+		openshiftSettings.put("resourceName", resourceName);
+		openshiftSettings.put("resourceType", "ResourceQuota");
+		openshiftSettings.put("namespace", "default");
+		openshiftSettings.put("verbose", "false");
+		
+		piplelineSettings.put("sandbox", "true");
+		
+		String jobConfig = VelocityUtil.parse(template, context, "PipelineJob"); //$NON-NLS-1$
+		
+		System.out.println();
+		System.out.println(jobConfig);
+		System.out.println();
+		
+		// create job
+		JobApi api = ServiceLoaderUtil.load(JobApi.class);
+		api.createJob(jobName2, jobConfig);
 	}
 	
 	/* (non-Javadoc)
@@ -123,7 +171,23 @@ public class JobCreateTestCase extends AbstractTestCase {
 		// Auto-generated method stub
 		super.clean();
 		// Delete ResourceQuota
-		// TODO
+		try {
+			createDeleteResourceQuotaJob();
+			runDeleteResourceQuotaJobWithClean();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void runDeleteResourceQuotaJobWithClean() throws Exception {
+		JobApi api = ServiceLoaderUtil.load(JobApi.class);
+		api.runJob(jobName2);
+		TimeUnit.SECONDS.sleep(15);
+		api.deleteJob(jobName2);
+		api.deleteJob(jobName);
 	}
 
 }

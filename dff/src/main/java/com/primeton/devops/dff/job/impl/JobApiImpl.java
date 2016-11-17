@@ -62,4 +62,57 @@ public class JobApiImpl implements JobApi {
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.primeton.devops.dff.job.JobApi#deleteJob(java.lang.String)
+	 */
+	@Override
+	public void deleteJob(String jobName) throws JobException {
+		if (StringUtils.isEmpty(jobName)) {
+			return;
+		}
+		// POST /job/${jobName}/doDelete
+		String url = HttpClientUtil.getFullURL(String.format("/job/%s/doDelete", jobName)); //$NON-NLS-1$
+		Map<String, String> header = new HashMap<>();
+		header.put("Accept", "application/json"); //$NON-NLS-1$ //$NON-NLS-2$
+		// See jenkins source code 
+		// hudson.security.csrf.CrumbFilter
+		// hudson.security.csrf.DefaultCrumbIssuer
+		header.put("Jenkins-Crumb", Constants.JENKINS_CRUMB); //$NON-NLS-1$
+		
+		try {
+			HttpResult result = HttpClientUtil.sendRequest("POST", url, header); //$NON-NLS-1$
+			System.out.println(result);
+			System.out.println(String.format("Delete job '%s' success.", jobName));
+		} catch (Exception e) {
+			throw new JobException(String.format("Delete job '%s' error.", jobName), e);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.primeton.devops.dff.job.JobApi#runJob(java.lang.String)
+	 */
+	@Override
+	public void runJob(String jobName) throws JobException {
+		if (StringUtils.isEmpty(jobName)) {
+			return;
+		}
+		// POST /job/${jobName}/buildWithParameters
+		String url = HttpClientUtil.getFullURL(String.format("/job/%s/buildWithParameters", jobName)); //$NON-NLS-1$
+		Map<String, String> header = new HashMap<>();
+		header.put("Accept", "application/json"); //$NON-NLS-1$ //$NON-NLS-2$
+		// See jenkins source code 
+		// hudson.security.csrf.CrumbFilter
+		// hudson.security.csrf.DefaultCrumbIssuer
+		header.put("Jenkins-Crumb", Constants.JENKINS_CRUMB); //$NON-NLS-1$
+		
+		try {
+			HttpResult result = HttpClientUtil.sendRequest("POST", url, header); //$NON-NLS-1$
+			System.out.println(result);
+			System.out.println(String.format("Trigger job '%s' success.", jobName));
+		} catch (Exception e) {
+			throw new JobException(String.format("Trigger job '%s' error.", jobName), e);
+		}
+		
+	}
+
 }
