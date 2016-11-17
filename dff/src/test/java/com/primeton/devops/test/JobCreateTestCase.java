@@ -189,7 +189,9 @@ public class JobCreateTestCase extends AbstractTestCase {
 	private void runDeleteResourceQuotaJobWithClean() throws Exception {
 		JobApi api = ServiceLoaderUtil.load(JobApi.class);
 		api.runJob(jobName2);
-		TimeUnit.SECONDS.sleep(30);
+		
+		TimeUnit.SECONDS.sleep(90);
+		
 		api.deleteJob(jobName2);
 		api.deleteJob(jobName);
 	}
