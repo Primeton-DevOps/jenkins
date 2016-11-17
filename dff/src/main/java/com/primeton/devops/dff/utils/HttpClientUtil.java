@@ -8,7 +8,6 @@
 
 package com.primeton.devops.dff.utils;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Map;
@@ -36,6 +35,7 @@ import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -200,6 +200,9 @@ public class HttpClientUtil implements Constants {
 			return null;
 		}
 		HttpEntity entity = response.getEntity();
+		return null == entity ? null : EntityUtils.toString(entity);
+		
+		/*
 		if (null == entity) {
 			return null;
 		}
@@ -212,6 +215,7 @@ public class HttpClientUtil implements Constants {
 		} finally {
 			IOUtils.closeQuietly(inputStream);
 		}
+		*/
 	}
 
 	/**
