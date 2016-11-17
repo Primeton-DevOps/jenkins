@@ -27,6 +27,8 @@ import com.primeton.devops.dff.utils.VelocityUtil;
  */
 public class JobCreateTestCase extends AbstractTestCase {
 	
+	private static final String AUTH_TOKEN = "W5TLNgNN6E_FZVaNkyNiBW_0JM2VrOFM3KpZqPR3EEc";
+
 	private final String uid = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date()); //$NON-NLS-1$
 	
 	private String jobName = "job-" + uid; //$NON-NLS-1$
@@ -50,7 +52,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 		
 		api.runJob(jobName);
 		
-		TimeUnit.SECONDS.sleep(30);
+		TimeUnit.SECONDS.sleep(100);
 	}
 	
 	/**
@@ -80,7 +82,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 		jobSettings.put("numToKeep", "10");
 		
 		openshiftSettings.put("url", "https://192.168.2.91:8443");
-		openshiftSettings.put("authToken", "dM5ip5fpvpNBJzDvk-qWn68NZz8bRro-LfX5rh5PdGI");
+		openshiftSettings.put("authToken", AUTH_TOKEN);
 		openshiftSettings.put("resourceDescriptor", resourceQuotaDescriptor);
 		openshiftSettings.put("namespace", "default");
 		openshiftSettings.put("verbose", "false");
@@ -119,7 +121,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 		System.out.println(yaml);
 		System.out.println();
 		
-		return yaml.replaceAll("'", "\\&apos;");
+		return yaml.replaceAll("'", "\\\\&apos;");
 	}
 	
 	/**
@@ -144,7 +146,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 		jobSettings.put("numToKeep", "10");
 		
 		openshiftSettings.put("url", "https://192.168.2.91:8443");
-		openshiftSettings.put("authToken", "dM5ip5fpvpNBJzDvk-qWn68NZz8bRro-LfX5rh5PdGI");
+		openshiftSettings.put("authToken", AUTH_TOKEN);
 		openshiftSettings.put("resourceName", resourceName);
 		openshiftSettings.put("resourceType", "ResourceQuota");
 		openshiftSettings.put("namespace", "default");
@@ -185,7 +187,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 	private void runDeleteResourceQuotaJobWithClean() throws Exception {
 		JobApi api = ServiceLoaderUtil.load(JobApi.class);
 		api.runJob(jobName2);
-		TimeUnit.SECONDS.sleep(15);
+		TimeUnit.SECONDS.sleep(30);
 		api.deleteJob(jobName2);
 		api.deleteJob(jobName);
 	}
