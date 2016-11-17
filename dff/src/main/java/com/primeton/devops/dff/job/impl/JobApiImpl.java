@@ -12,10 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.Header;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHeader;
 
 import com.primeton.devops.dff.job.Job;
 import com.primeton.devops.dff.job.JobApi;
