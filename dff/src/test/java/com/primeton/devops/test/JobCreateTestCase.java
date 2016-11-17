@@ -34,7 +34,9 @@ public class JobCreateTestCase extends AbstractTestCase {
 	private String jobName = "job-" + uid; //$NON-NLS-1$
 	private String jobName2 = "clean-job-" + uid; //$NON-NLS-1$
 	
-	private String resourceName = "ResourceQuota-" + uid;
+	private String resourceName = "ResourceQuota-" + uid; //$NON-NLS-1$
+	// before execute TestCase, new openshift project yyyyyyyy
+	private String namespace = "yyyyyyyy"; //$NON-NLS-1$
 
 	/* (non-Javadoc)
 	 * @see com.primeton.devops.test.AbstractTestCase#test()
@@ -84,7 +86,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 		openshiftSettings.put("url", "https://192.168.2.91:8443");
 		openshiftSettings.put("authToken", AUTH_TOKEN);
 		openshiftSettings.put("resourceDescriptor", resourceQuotaDescriptor);
-		openshiftSettings.put("namespace", "default");
+		openshiftSettings.put("namespace", namespace);
 		openshiftSettings.put("verbose", "false");
 		
 		piplelineSettings.put("sandbox", "true");
@@ -149,7 +151,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 		openshiftSettings.put("authToken", AUTH_TOKEN);
 		openshiftSettings.put("resourceName", resourceName);
 		openshiftSettings.put("resourceType", "ResourceQuota");
-		openshiftSettings.put("namespace", "default");
+		openshiftSettings.put("namespace", namespace);
 		openshiftSettings.put("verbose", "false");
 		
 		piplelineSettings.put("sandbox", "true");
