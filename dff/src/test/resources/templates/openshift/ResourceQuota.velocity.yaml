@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: quota
+  name: ${name}
 spec:
   hard:
     memory: ${memory}Gi

@@ -25,7 +25,11 @@ import com.primeton.devops.dff.utils.VelocityUtil;
  */
 public class JobCreateTestCase extends AbstractTestCase {
 	
-	private String jobName = "job-" + new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date()); //$NON-NLS-1$ //$NON-NLS-2$
+	private final String uid = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date());
+	
+	private String jobName = "job-" + uid; //$NON-NLS-1$ //$NON-NLS-2$
+	
+	private String resourceName = "ResourceQuota-" + uid;
 
 	/* (non-Javadoc)
 	 * @see com.primeton.devops.test.AbstractTestCase#test()
@@ -33,7 +37,7 @@ public class JobCreateTestCase extends AbstractTestCase {
 	@Override
 	public void test() throws Exception {
 		
-		String jobConfig = getJobConfig(getResourceQuota());
+		String jobConfig = getJobConfig(getResourceQuota(resourceName));
 		System.out.println();
 		System.out.println(jobConfig);
 		System.out.println();
@@ -90,11 +94,12 @@ public class JobCreateTestCase extends AbstractTestCase {
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	private String getResourceQuota() throws FileNotFoundException {
+	private String getResourceQuota(String resourceName) throws FileNotFoundException {
 		String template = getTemplateAsString("classpath:/templates/openshift/ResourceQuota.velocity.yaml");
 		System.err.println(template);
 		
 		Map<String, Object> context = new HashMap<>();
+		context.put("name", resourceName);
 		context.put("memory", 100);
 		context.put("cpu", "200");
 		context.put("pods", "100");
@@ -108,6 +113,17 @@ public class JobCreateTestCase extends AbstractTestCase {
 		System.out.println();
 		
 		return yaml.replaceAll("'", "&apos;");
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.primeton.devops.test.AbstractTestCase#clean()
+	 */
+	@Override
+	public void clean() {
+		// Auto-generated method stub
+		super.clean();
+		// Delete ResourceQuota
+		// TODO
 	}
 
 }
