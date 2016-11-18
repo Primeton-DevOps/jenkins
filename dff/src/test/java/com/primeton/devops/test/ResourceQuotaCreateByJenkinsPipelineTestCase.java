@@ -22,7 +22,7 @@ import com.primeton.devops.dff.utils.VelocityUtil;
 
 /**
  * 
- * 1) 根据Velocity模版生成jenkins任务配置文件(使用Pipeline类型任务)，jenkins任务配置文件中包含如部署如OpenShift资源的yaml文件内容，可以使用Velocity的include语法；<br>
+ * 1) 根据Velocity模版生成jenkins任务配置文件(使用Pipeline类型任务)，jenkins任务配置文件中包含如部署如OpenShift资源的yaml文件内容，可以使用Velocity的include/parse指令；<br>
  * 2) 调用Jenkins的REST API创建部署资源的任务；<br>
  * 3) 调用Jenkins的REST API执行部署资源的任务；<br>
  * 4) 调用Jenkins的REST API获取执行任务的日志；<br>
