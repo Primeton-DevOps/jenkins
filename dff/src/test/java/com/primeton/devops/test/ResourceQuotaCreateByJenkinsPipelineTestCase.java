@@ -31,7 +31,7 @@ import com.primeton.devops.dff.utils.VelocityUtil;
  */
 public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCase {
 	
-	private static final String AUTH_TOKEN = "W5TLNgNN6E_FZVaNkyNiBW_0JM2VrOFM3KpZqPR3EEc";
+	private static final String AUTH_TOKEN = "W5TLNgNN6E_FZVaNkyNiBW_0JM2VrOFM3KpZqPR3EEc"; //$NON-NLS-1$
 
 	private final String uid = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date()); //$NON-NLS-1$
 	
@@ -72,7 +72,7 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 		System.out.println(resourceQuotaDescriptor);
 		System.out.println();
 		
-		String template = getTemplateAsString("classpath:/templates/job/CreateResourcePipelineJobTemplate.velocity.xml");
+		String template = getTemplateAsString("classpath:/templates/job/CreateResourcePipelineJobTemplate.velocity.xml"); //$NON-NLS-1$
 		System.err.println(template);
 		
 		Map<String, Object> context = new HashMap<>();
@@ -80,20 +80,20 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 		Map<String, Object> openshiftSettings = new HashMap<>();
 		Map<String, Object> piplelineSettings = new HashMap<>();
 		
-		context.put("job", jobSettings);
-		context.put("openshift", openshiftSettings);
-		context.put("pipleline", piplelineSettings);
+		context.put("job", jobSettings); //$NON-NLS-1$
+		context.put("openshift", openshiftSettings); //$NON-NLS-1$
+		context.put("pipleline", piplelineSettings); //$NON-NLS-1$
 		
-		jobSettings.put("daysToKeep", 3);
-		jobSettings.put("numToKeep", "10");
+		jobSettings.put("daysToKeep", 3); //$NON-NLS-1$
+		jobSettings.put("numToKeep", "10"); //$NON-NLS-1$
 		
-		openshiftSettings.put("url", "https://192.168.2.91:8443");
-		openshiftSettings.put("authToken", AUTH_TOKEN);
-		openshiftSettings.put("resourceDescriptor", resourceQuotaDescriptor);
-		openshiftSettings.put("namespace", namespace);
-		openshiftSettings.put("verbose", "false");
+		openshiftSettings.put("url", "https://192.168.2.91:8443"); //$NON-NLS-1$  //$NON-NLS-2$
+		openshiftSettings.put("authToken", AUTH_TOKEN); //$NON-NLS-1$
+		openshiftSettings.put("resourceDescriptor", resourceQuotaDescriptor); //$NON-NLS-1$
+		openshiftSettings.put("namespace", namespace); //$NON-NLS-1$
+		openshiftSettings.put("verbose", "false"); //$NON-NLS-1$  //$NON-NLS-2$
 		
-		piplelineSettings.put("sandbox", "true");
+		piplelineSettings.put("sandbox", "true"); //$NON-NLS-1$  //$NON-NLS-2$
 		
 		String jobConfig = VelocityUtil.parse(template, context, "PipelineJob"); //$NON-NLS-1$
 		
@@ -115,6 +115,7 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 		System.err.println(template);
 		
 		Map<String, Object> context = new HashMap<>();
+		// mock data
 		context.put("name", resourceName);
 		context.put("memory", 100);
 		context.put("cpu", "200");
@@ -165,7 +166,7 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 	 * @throws JobException
 	 */
 	private void createDeleteResourceQuotaJob(String resourceDescriptor) throws FileNotFoundException, JobException {
-		String template = getTemplateAsString("classpath:/templates/job/DeleteResourcePipelineJobTemplate.velocity.xml");
+		String template = getTemplateAsString("classpath:/templates/job/DeleteResourcePipelineJobTemplate.velocity.xml"); //$NON-NLS-1$
 		System.err.println(template);
 		
 		Map<String, Object> context = new HashMap<>();
@@ -173,20 +174,20 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 		Map<String, Object> openshiftSettings = new HashMap<>();
 		Map<String, Object> piplelineSettings = new HashMap<>();
 		
-		context.put("job", jobSettings);
-		context.put("openshift", openshiftSettings);
-		context.put("pipleline", piplelineSettings);
+		context.put("job", jobSettings); //$NON-NLS-1$
+		context.put("openshift", openshiftSettings); //$NON-NLS-1$
+		context.put("pipleline", piplelineSettings); //$NON-NLS-1$
 		
-		jobSettings.put("daysToKeep", 3);
-		jobSettings.put("numToKeep", "10");
+		jobSettings.put("daysToKeep", 3); //$NON-NLS-1$
+		jobSettings.put("numToKeep", "10"); //$NON-NLS-1$
 		
-		openshiftSettings.put("url", "https://192.168.2.91:8443");
-		openshiftSettings.put("authToken", AUTH_TOKEN);
-//		openshiftSettings.put("resourceName", resourceName);
-//		openshiftSettings.put("resourceType", "ResourceQuota");
-		openshiftSettings.put("resourceDescriptor", resourceDescriptor);
-		openshiftSettings.put("namespace", namespace);
-		openshiftSettings.put("verbose", "true");
+		openshiftSettings.put("url", "https://192.168.2.91:8443"); //$NON-NLS-1$
+		openshiftSettings.put("authToken", AUTH_TOKEN); //$NON-NLS-1$
+//		openshiftSettings.put("resourceName", resourceName); //$NON-NLS-1$
+//		openshiftSettings.put("resourceType", "ResourceQuota"); //$NON-NLS-1$
+		openshiftSettings.put("resourceDescriptor", resourceDescriptor); //$NON-NLS-1$
+		openshiftSettings.put("namespace", namespace); //$NON-NLS-1$
+		openshiftSettings.put("verbose", "true"); //$NON-NLS-1$
 		
 		piplelineSettings.put("sandbox", "true");
 		
