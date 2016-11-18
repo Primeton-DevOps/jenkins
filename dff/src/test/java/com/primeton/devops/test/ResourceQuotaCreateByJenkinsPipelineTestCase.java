@@ -111,25 +111,25 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 	 * @throws FileNotFoundException
 	 */
 	private String getResourceQuota(String resourceName) throws FileNotFoundException {
-		String template = getTemplateAsString("classpath:/templates/openshift/ResourceQuota.velocity.yaml");
+		String template = getTemplateAsString("classpath:/templates/openshift/ResourceQuota.velocity.yaml"); //$NON-NLS-1$
 		System.err.println(template);
 		
 		Map<String, Object> context = new HashMap<>();
 		// mock data
-		context.put("name", resourceName);
-		context.put("memory", 100);
-		context.put("cpu", "200");
-		context.put("pods", "100");
-		context.put("services", "100");
-		context.put("replicationcontrollers", "50");
-		context.put("resourcequotas", "10");
+		context.put("name", resourceName); //$NON-NLS-1$
+		context.put("memory", 100); //$NON-NLS-1$
+		context.put("cpu", "200"); //$NON-NLS-1$
+		context.put("pods", "100"); //$NON-NLS-1$
+		context.put("services", "100"); //$NON-NLS-1$
+		context.put("replicationcontrollers", "50"); //$NON-NLS-1$
+		context.put("resourcequotas", "10"); //$NON-NLS-1$
 		
-		String yaml = VelocityUtil.parse(template, context, "ResourceQuota.yaml");
+		String yaml = VelocityUtil.parse(template, context, "ResourceQuota.yaml"); //$NON-NLS-1$
 		System.out.println();
 		System.out.println(yaml);
 		System.out.println();
 		
-		return yaml.replaceAll("'", "\\\\&apos;");
+		return yaml.replaceAll("'", "\\\\&apos;"); //$NON-NLS-1$  //$NON-NLS-2$
 	}
 	
 	/**
@@ -140,7 +140,7 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 	 * @throws FileNotFoundException
 	 */
 	private String getResourceQuota2(String resourceName) throws FileNotFoundException {
-		String template = getTemplateAsString("classpath:/templates/openshift/ResourceQuota.velocity2.yaml");
+		String template = getTemplateAsString("classpath:/templates/openshift/ResourceQuota.velocity2.yaml"); //$NON-NLS-1$
 		System.err.println(template);
 		
 		Map<String, Object> context = new HashMap<>();
@@ -152,12 +152,12 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 //		context.put("replicationcontrollers", "50");
 //		context.put("resourcequotas", "10");
 		
-		String yaml = VelocityUtil.parse(template, context, "ResourceQuota.yaml");
+		String yaml = VelocityUtil.parse(template, context, "ResourceQuota.yaml"); //$NON-NLS-1$
 		System.out.println();
 		System.out.println(yaml);
 		System.out.println();
 		
-		return yaml.replaceAll("'", "\\\\&apos;");
+		return yaml.replaceAll("'", "\\\\&apos;"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	/**
@@ -187,9 +187,9 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 //		openshiftSettings.put("resourceType", "ResourceQuota"); //$NON-NLS-1$
 		openshiftSettings.put("resourceDescriptor", resourceDescriptor); //$NON-NLS-1$
 		openshiftSettings.put("namespace", namespace); //$NON-NLS-1$
-		openshiftSettings.put("verbose", "true"); //$NON-NLS-1$
+		openshiftSettings.put("verbose", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		piplelineSettings.put("sandbox", "true");
+		piplelineSettings.put("sandbox", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		String jobConfig = VelocityUtil.parse(template, context, "PipelineJob"); //$NON-NLS-1$
 		
