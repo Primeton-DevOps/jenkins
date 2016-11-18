@@ -17,7 +17,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
 import com.primeton.devops.dff.Constants;
-import com.primeton.devops.dff.job.Job;
 import com.primeton.devops.dff.job.JobApi;
 import com.primeton.devops.dff.job.JobException;
 import com.primeton.devops.dff.utils.HttpClientUtil;
@@ -34,9 +33,9 @@ public class JobApiImpl implements JobApi {
 	 * @see com.primeton.devops.dff.job.JobApi#createJob(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Job createJob(String jobName, String jobConfig) throws JobException {
+	public void createJob(String jobName, String jobConfig) throws JobException {
 		if (StringUtils.isEmpty(jobName) || StringUtils.isEmpty(jobConfig)) {
-			return null;
+			return;
 		}
 		String url = HttpClientUtil.getFullURL("/createItem?name=" + jobName); //$NON-NLS-1$
 		StringEntity entity = new StringEntity(jobConfig, ContentType.APPLICATION_XML);
@@ -59,7 +58,6 @@ public class JobApiImpl implements JobApi {
 		} catch (Exception e) {
 			throw new JobException(String.format("Create job '%s' error.", jobName), e);
 		}
-		return null;
 	}
 
 	/* (non-Javadoc)

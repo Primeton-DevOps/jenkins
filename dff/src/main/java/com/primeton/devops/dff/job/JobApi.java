@@ -22,7 +22,7 @@ public interface JobApi {
 	 * @return
 	 * @throws JobException
 	 */
-	Job createJob(String jobName, String jobConfig) throws JobException;
+	void createJob(String jobName, String jobConfig) throws JobException;
 	
 	/**
 	 * 

@@ -105,6 +105,7 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 	}
 	
 	/**
+	 * For create ResourceQuota resource descriptor yaml file. <br>
 	 * 
 	 * @return
 	 * @throws FileNotFoundException
@@ -130,6 +131,13 @@ public class ResourceQuotaCreateByJenkinsPipelineTestCase extends AbstractTestCa
 		return yaml.replaceAll("'", "\\\\&apos;");
 	}
 	
+	/**
+	 * For delete ResourceQuota resource descriptor yaml file. <br>
+	 * 
+	 * @param resourceName
+	 * @return
+	 * @throws FileNotFoundException
+	 */
 	private String getResourceQuota2(String resourceName) throws FileNotFoundException {
 		String template = getTemplateAsString("classpath:/templates/openshift/ResourceQuota.velocity2.yaml");
 		System.err.println(template);
