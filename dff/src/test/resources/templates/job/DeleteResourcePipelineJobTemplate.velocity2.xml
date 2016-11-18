@@ -35,7 +35,7 @@
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.21">
     <script>node {
     stage(&quot;Delete Resource&quot;) {
-        openshiftDeleteResourceByJsonYaml apiURL: &apos;${openshift.url}&apos;, authToken: &apos;${openshift.authToken}&apos;, jsonyaml: &apos;&apos;&apos;${openshift.resourceDescriptor}&apos;&apos;&apos;, namespace: &apos;${openshift.namespace}&apos;, verbose: &apos;${openshift.verbose}&apos;
+        openshiftDeleteResourceByLabels apiURL: &apos;${openshift.url}&apos;, authToken: &apos;${openshift.authToken}&apos;, keys: &apos;${openshift.resourceName}&apos;, namespace: &apos;${openshift.namespace}&apos;, types: &apos;${openshift.resourceType}&apos;, values: &apos;&apos;, verbose: &apos;${openshift.verbose}&apos;
     }
 }</script>
     <sandbox>${pipeline.sandbox}</sandbox>
