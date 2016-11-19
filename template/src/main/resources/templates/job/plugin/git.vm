@@ -1,0 +1,12 @@
+// Auto generate by apache velocity
+// jenkins git plugin default value
+// branch: master
+// changelog: true
+// credentialsId: none
+// poll: true
+git \
+	#if ( ${git.branch} && "master" != ${git.branch} )branch: '${git.branch}', \ #end
+	#if ( ${git.changelog} && "false" == ${git.changelog} ) changelog: false, \ #end
+	#if ( ${git.credentialsId} )credentialsId: '${git.credentialsId}', \ #end 
+	#if ( ${git.poll} && "false" == ${git.poll} )poll: false, \ #end
+	url: '${git.url}'
