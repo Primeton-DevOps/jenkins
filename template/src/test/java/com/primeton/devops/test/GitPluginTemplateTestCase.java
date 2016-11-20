@@ -21,13 +21,13 @@ public class GitPluginTemplateTestCase extends AbstractTestCase {
 	public void test() throws Exception {
 		Map<String, Object> context = new HashMap<>();
 		Map<String, Object> gitSettings = new HashMap<>();
-		context.put("git", gitSettings);
+		context.put("git", gitSettings); //$NON-NLS-1$
 		
 //		gitSettings.put("branch", "master");
-		gitSettings.put("branch", "1.0.0");
+//		gitSettings.put("branch", "1.0.0");
 //		gitSettings.put("changelog", "true");
 		gitSettings.put("changelog", "false");
-		gitSettings.put("credentialsId", "${uuid}");
+//		gitSettings.put("credentialsId", "${uuid}");
 //		gitSettings.put("poll", "true");
 		gitSettings.put("poll", "false");
 		gitSettings.put("url", "https://github.com/Primeton-DevOps/jenkins.git");

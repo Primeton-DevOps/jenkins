@@ -1,5 +1,5 @@
-// Auto generate by apache velocity
-// jenkins git plugin default value
+// jenkins git plugin (Auto generate by apache velocity)
+// <Default>
 // branch: master
 // changelog: true
 // credentialsId: none
