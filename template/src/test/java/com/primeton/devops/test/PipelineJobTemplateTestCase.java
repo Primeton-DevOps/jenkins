@@ -69,6 +69,8 @@ public class PipelineJobTemplateTestCase extends AbstractTestCase {
 		jobApi.runJob(jobName);
 		
 		TimeUnit.SECONDS.sleep(90);
+		
+		jobApi.deleteJob(jobName);
 	}
 	
 	/**
