@@ -5,14 +5,18 @@
 ## returnStatus: false
 ## encoding: UTF-8
 ##
-#if ( ${sh.returnStdout} && ${sh.returnStdout} == "true" && ${sh.returnStatus} && ${sh.returnStatus} == "true" )
-#set ( ${sh.returnStatus} = "false" )
+
+#if ( ${returnStdout} && ${returnStdout} == "true" && ${returnStatus} && ${returnStatus} == "true" )
+#set ( ${returnStatus} = "false" )
 #end
-sh \
-#if ( ${sh.encoding} && "UTF-8" != ${sh.encoding} && "utf-8" != ${sh.encoding} )  encoding: '${sh.encoding}', \
+    sh \
+#if ( ${encoding} && "UTF-8" != ${encoding} && "utf-8" != ${encoding} )
+      encoding: '${encoding}', \
 #end
-#if ( ${sh.returnStdout} && "true" == ${sh.returnStdout} )  returnStdout: true, \
+#if ( ${returnStdout} && "true" == ${returnStdout} )
+      returnStdout: true, \
 #end
-#if ( ${sh.returnStatus} && "true" == ${sh.returnStatus} )  returnStatus: true, \
+#if ( ${returnStatus} && "true" == ${returnStatus} )
+      returnStatus: true, \
 #end
-  script: '''${sh.script}'''
+      script: '''${script}'''

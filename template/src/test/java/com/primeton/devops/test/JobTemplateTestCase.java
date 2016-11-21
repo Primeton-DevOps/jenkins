@@ -115,8 +115,51 @@ public class JobTemplateTestCase extends AbstractTestCase {
 	 */
 	private Map<String, Object> getPipelineSettings() {
 		Map<String, Object> settings = new HashMap<>();
-		settings.put("script", "node {\n	stage('HelloWorld') {\n		echo 'Hello World'\n	}\n}");
 		settings.put("sandbox", "true");
+
+		//settings.put("codeType", "general"); // general(default) / node / stage
+		//settings.put("script", "node {\n	stage('HelloWorld') {\n		echo 'Hello World'\n	}\n}");
+		
+		settings.put("codeType", "stage");
+		settings.put("nodeSelector", "java");
+		
+		List<Map<String, Object>> stages = new ArrayList<>();
+		settings.put("stages", stages);
+		
+		Map<String, Object> stage1 = new HashMap<>();
+		stage1.put("name", "Build Maven Source");
+		List<Map<String, Object>> steps = new ArrayList<>();
+		stage1.put("steps", steps);
+		stages.add(stage1);
+		
+		Map<String, Object> step1 = new HashMap<>();
+		steps.add(step1);
+		step1.put("codeType", "plugin");
+//		step1.put("codeType", "general"); // default
+		step1.put("pluginName", "git");
+//		step1.put("branch", "master");
+		step1.put("branch", "1.0");
+		step1.put("changelog", "false");
+//		step1.put("poll", "false");
+		step1.put("url", "https://github.com/Primeton-DevOps/jenkins.git");
+		
+		Map<String, Object> step2 = new HashMap<>();
+		steps.add(step2);
+		step2.put("codeType", "plugin");
+		step2.put("pluginName", "sh");
+		step2.put("returnStdout", "true");
+		step2.put("returnStatus", "false");
+		step2.put("encoding", "UTF-8");
+		step2.put("script", "mvn clean package -s ~/.m2/settings.xml");
+		
+		Map<String, Object> step3 = new HashMap<>();
+		steps.add(step3);
+		step3.put("codeType", "general"); // or not put
+		//step3.put("script", "sh '''binary=`find . -name test.war`\nif [ -f ${binary} ]; then\n\techo 'Build success.'\nelse\necho 'Build failed.'\nfi'''");
+		step3.put("script", "echo 'Build success,'");
+		
+		// other steps
+		
 		return settings;
 	}
 

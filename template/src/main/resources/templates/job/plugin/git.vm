@@ -6,13 +6,18 @@
 ## credentialsId: none
 ## poll: true
 ##
-git \
-#if ( ${git.branch} && "master" != ${git.branch} )  branch: '${git.branch}', \
+
+    git \
+#if ( ${branch} && "master" != ${branch} )
+      branch: '${branch}', \
 #end
-#if ( ${git.changelog} && "false" == ${git.changelog} )  changelog: false, \
+#if ( ${changelog} && "false" == ${changelog} )
+      changelog: false, \
 #end
-#if ( ${git.credentialsId} )  credentialsId: '${git.credentialsId}', \
+#if ( ${credentialsId} )
+      credentialsId: '${credentialsId}', \
 #end 
-#if ( ${git.poll} && "false" == ${git.poll} )  poll: false, \
+#if ( ${poll} && "false" == ${poll} )
+      poll: false, \
 #end
-  url: '${git.url}'
+      url: '${url}'

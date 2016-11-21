@@ -110,7 +110,46 @@ ${triggerConfig}
 ## Pipeline Job
 ##
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
-    <script>${pipeline.script}</script>
+    <script>
+#if ( !${pipeline.codeType} || ${pipeline.codeType} == "general" )
+##
+## General string code
+##
+${pipeline.script}
+#elseif( ${pipeline.codeType} == "node" )
+##
+## foreach nodes -> foreach stages -> foreach steps
+##
+
+##
+#elseif( ${pipeline.codeType} == "stage" )
+##
+## foreach stages -> foreach steps
+##
+
+node#if ( ${pipeline.nodeSelector} )('${pipeline.nodeSelector}')#end {
+#foreach ( $stage in ${pipeline.stages} )
+  stage('${stage.name}') {## stage begin
+#foreach ( $step in ${stage.steps} )## foreach steps begin
+#if ( !${step.codeType} || "general" == ${step.codeType})
+		${step.script}## output general string code
+#else
+#set ( $stepCode = ${parseTool.merge("classpath:/templates/job/plugin/${step.pluginName}.vm", ${step})} )
+		${stepCode}## output generate result code
+
+#end## if ${step.codeType} end
+#end## foreach ${stage.steps} end
+  }## stage end
+#end## foreach ${pipeline.stages} end
+}
+##
+## else
+##
+#else
+${pipeline.script}
+#end
+	
+    </script>
     <sandbox>${pipeline.sandbox}</sandbox>
   </definition>
   <triggers/>
