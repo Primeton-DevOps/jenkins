@@ -21,7 +21,7 @@ import com.primeton.devops.velocity.VelocityUtil;
  *
  * @author zhongwen (mailto:zhongwen@primeton.com)
  */
-public class JobTemplateTestCase extends AbstractTestCase {
+public class PipelineJobTemplateTestCase extends AbstractTestCase {
 
 	/* (non-Javadoc)
 	 * @see com.primeton.devops.test.AbstractTestCase#test()
@@ -79,7 +79,7 @@ public class JobTemplateTestCase extends AbstractTestCase {
 		githubPushTrigger.put("spec", "");
 		
 		triggers.add(timeTrigger);
-		triggers.add(githubPushTrigger);
+//		triggers.add(githubPushTrigger);
 		return triggers;
 	}
 	
@@ -100,7 +100,7 @@ public class JobTemplateTestCase extends AbstractTestCase {
 		Map<String, Object> param2 = new HashMap<>();
 		param2.put("type", "String");
 		param2.put("name", "param2");
-		param2.put("defaultValue", "");
+		param2.put("defaultValue", "Jenkins Pipleline Job");
 		param2.put("description", "This is a test parameter.");
 		parameters.add(param2);
 		
@@ -119,7 +119,7 @@ public class JobTemplateTestCase extends AbstractTestCase {
 		//settings.put("script", "node {\n	stage('HelloWorld') {\n		echo 'Hello World'\n	}\n}");
 		
 		settings.put("codeType", "stage");
-		settings.put("nodeSelector", "java");
+//		settings.put("nodeSelector", "java");
 		
 		List<Map<String, Object>> stages = new ArrayList<>();
 		settings.put("stages", stages);
@@ -139,7 +139,7 @@ public class JobTemplateTestCase extends AbstractTestCase {
 		step1.put("branch", "1.0");
 		step1.put("changelog", "false");
 //		step1.put("poll", "false");
-		step1.put("url", "https://github.com/Primeton-DevOps/jenkins.git");
+		step1.put("url", "https://github.com/Primeton-DevOps/test.git");
 		
 		Map<String, Object> step2 = new HashMap<>();
 		steps.add(step2);

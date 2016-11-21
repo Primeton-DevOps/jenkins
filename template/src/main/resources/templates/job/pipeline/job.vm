@@ -120,6 +120,7 @@ ${pipeline.script}
 ## ---------------------------------------- ----------------------------------------
 #elseif( ${pipeline.codeType} == "node" )
 ##
+## multi-nodes
 ## foreach nodes -> foreach stages -> foreach steps
 ##
 ## TODO
@@ -127,6 +128,7 @@ ${pipeline.script}
 ## ---------------------------------------- ----------------------------------------
 #elseif( ${pipeline.codeType} == "stage" )
 ##
+## singleton-node
 ## foreach stages -> foreach steps
 ##
 
@@ -135,10 +137,11 @@ node#if ( ${pipeline.nodeSelector} )('${pipeline.nodeSelector}')#end {
   stage('${stage.name}') {## stage begin
 #foreach ( $step in ${stage.steps} )## foreach steps begin
 #if ( !${step.codeType} || "general" == ${step.codeType})
-		${step.script}## output general string code
+    ${step.script}## output general string code
+
 #else
 #set ( $stepCode = ${parseTool.merge("classpath:/templates/job/plugin/${step.pluginName}.vm", ${step})} )
-		${stepCode}## output generate result code
+${stepCode}## output generate result code
 
 #end## if ${step.codeType} end
 #end## foreach ${stage.steps} end
