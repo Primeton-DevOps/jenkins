@@ -1,7 +1,8 @@
 ##
 ## pipeline job velocity templates
 ##
-##
+## parseUtil
+## 
 ## velocity code
 #if ( !${job.keepDependencies} )
 #set( ${job.keepDependencies} = "false" )
@@ -35,12 +36,27 @@
 #set ( ${job.parametersDefinition} = "false" )
 #end
 ##
+## Build Triggers
 ##
+#if ( ! ${job.buildTriggers} )
+#set ( ${job.buildTriggers} = "false" )
+#end
+##
+## Pipeline Code
+##
+#if ( ! ${pipeline.sandbox} )
+#set ( ${pipeline.sandbox} = "true" )
+#end
+##
+##
+## job configuration file content
 ##
 <?xml version='1.0' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.9">
-  <!-- General -->
   <actions/>
+##
+## General
+##
   <description>${job.description}</description>
   <keepDependencies>${job.keepDependencies}</keepDependencies>
   <properties>
@@ -50,9 +66,8 @@
       <name></name>
       <resourceVersion></resourceVersion>
     </io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty>
-    <!-- Discard old builds -->
 ##
-## 
+## Discard old builds
 ##
 #if ( ${job.discardOldBuilds} && "true" == ${job.discardOldBuilds} )
     <jenkins.model.BuildDiscarderProperty>
@@ -66,64 +81,36 @@
 #end
 ##
 ## ParametersDefinitionProperty
-## Use child template and iteration
 ##
-#if( ${job.parametersDefinition} && "true" == ${job.parametersDefinition} )
+#if ( ${job.parametersDefinition} && "true" == ${job.parametersDefinition} )
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
-        <hudson.model.ChoiceParameterDefinition>
-          <name>PARAM1</name>
-          <description>参数描述下信息</description>
-          <choices class="java.util.Arrays$ArrayList">
-            <a class="string-array">
-              <string>yes</string>
-              <string>no</string>
-            </a>
-          </choices>
-        </hudson.model.ChoiceParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>PARAM2</name>
-          <description>参数描述信息</description>
-          <defaultValue>enable</defaultValue>
-        </hudson.model.StringParameterDefinition>
+#foreach ( $param in ${job.parameters} )
+#set ( $content = ${parseUtil.merge("classpath:/templates/job/parameter/${param.type}.vm", ${param})} )        
+#end
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
 #end
+##
+## Build Triggers
+##
+#if ( ${job.buildTriggers} && "true" == ${job.buildTriggers} )
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
-        <hudson.triggers.TimerTrigger>
-          <spec>H/59 * * * *</spec>
-        </hudson.triggers.TimerTrigger>
-        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.23.1">
-          <spec></spec>
-        </com.cloudbees.jenkins.GitHubPushTrigger>
+#foreach ( $trigger in ${job.triggers} )
+#set ( $content = ${parseUtil.merge("classpath:/templates/job/trigger/${trigger.type}.vm", ${trigger})} )
+${content}
+#end
       </triggers>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+#end
   </properties>
+##
+## Pipeline Job
+##
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
-    <script>node {
-    stage(&quot;SCM&quot;) {
-        // Auto generate by apache velocity
-// jenkins git plugin default value
-// branch: master
-// changelog: true
-// credentialsId: none
-// poll: true
-git \
-  changelog: false, \
-  poll: false, \
-  url: &apos;https://github.com/Primeton-DevOps/jenkins.git&apos;
-
-    }
-    
-    stage(&quot;sh&quot;) {
-        sh returnStatus: true, \
-        script: &apos;&apos;&apos;ifconfig
-        ps -ef|grep java&apos;&apos;&apos;
-
-    }
-}</script>
-    <sandbox>true</sandbox>
+    <script>${pipeline.script}</script>
+    <sandbox>${pipeline.sandbox}</sandbox>
   </definition>
   <triggers/>
 </flow-definition>

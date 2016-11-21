@@ -1,0 +1,8 @@
+##
+## TextParameterDefinition
+##
+        <hudson.model.TextParameterDefinition>
+          <name>${name}</name>
+          <description>${description}</description>
+          <defaultValue>${defaultValue}</defaultValue>
+        </hudson.model.TextParameterDefinition>

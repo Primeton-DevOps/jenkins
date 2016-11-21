@@ -1,0 +1,7 @@
+##
+## FileParameterDefinition
+##
+        <hudson.model.FileParameterDefinition>
+          <name>${name}</name>
+          <description>${description}</description>
+        </hudson.model.FileParameterDefinition>

@@ -1,0 +1,6 @@
+##
+## GitHubPushTrigger
+##
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.23.1">
+          <spec>${spec}</spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>

@@ -1,0 +1,12 @@
+##
+## BooleanParameterDefinition
+##
+#if ( ${defaultValue} )
+#set ( ${defaultValue} = "true" )
+#end
+##
+        <hudson.model.BooleanParameterDefinition>
+          <name>${name}</name>
+          <description>${description}</description>
+          <defaultValue>${defaultValue}</defaultValue>
+        </hudson.model.BooleanParameterDefinition>

@@ -1,0 +1,9 @@
+##
+## RunParameterDefinition
+##
+        <hudson.model.RunParameterDefinition>
+          <name>${name}</name>
+          <description>${description}</description>
+          <projectName>${projectName}</projectName>
+          <filter>${filter}</filter>
+        </hudson.model.RunParameterDefinition>

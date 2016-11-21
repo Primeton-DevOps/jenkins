@@ -1,0 +1,14 @@
+##
+## ChoiceParameterDefinition
+##
+        <hudson.model.ChoiceParameterDefinition>
+          <name>${name}</name>
+          <description>${description}</description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+#foreach( $value in $values )
+              <string>${value}</string>
+#end            
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
