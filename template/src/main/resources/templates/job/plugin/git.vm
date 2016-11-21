@@ -1,9 +1,11 @@
-// jenkins git plugin (Auto generate by apache velocity)
-// <Default>
-// branch: master
-// changelog: true
-// credentialsId: none
-// poll: true
+##
+## jenkins git plugin
+## <Default>
+## branch: master
+## changelog: true
+## credentialsId: none
+## poll: true
+##
 git \
 #if ( ${git.branch} && "master" != ${git.branch} )  branch: '${git.branch}', \
 #end

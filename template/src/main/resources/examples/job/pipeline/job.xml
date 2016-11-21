@@ -1,48 +1,8 @@
-##
-## pipeline job velocity templates
-##
-##
-## velocity code
-#if ( !${job.keepDependencies} )
-#set( ${job.keepDependencies} = "false" )
-#end
-##
-## Discard Old Builds
-##
-#if ( ! ${job.discardOldBuilds} )
-#set( ${job.discardOldBuilds} = "false" )
-#end
-##
-#if ( ! ${job.daysToKeep} )
-#set ( ${job.daysToKeep} = "-1" )
-#end
-##
-#if ( ! ${job.numToKeep} )
-#set ( ${job.numToKeep} = "-1" )
-#end
-##
-#if ( ! ${job.artifactDaysToKeep} )
-#set ( ${job.artifactDaysToKeep} = "-1" )
-#end
-##
-#if ( ! ${job.artifactNumToKeep} )
-#set ( ${job.artifactNumToKeep} = "-1" )
-#end
-##
-## Job Parameters Definition
-##
-#if ( ! ${job.parametersDefinition} )
-#set ( ${job.parametersDefinition} = "false" )
-#end
-##
-##
-##
 <?xml version='1.0' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.9">
-  <!-- General -->
   <actions/>
-  <description>${job.description}</description>
-  <keepDependencies>${job.keepDependencies}</keepDependencies>
+  <description>项目描述信息</description>
+  <keepDependencies>false</keepDependencies>
   <properties>
     <io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty plugin="openshift-sync@0.0.17">
       <uid></uid>
@@ -50,11 +10,6 @@
       <name></name>
       <resourceVersion></resourceVersion>
     </io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty>
-    <!-- Discard old builds -->
-##
-## 
-##
-#if ( ${job.discardOldBuilds} && "true" == ${job.discardOldBuilds} )
     <jenkins.model.BuildDiscarderProperty>
       <strategy class="hudson.tasks.LogRotator">
         <daysToKeep>5</daysToKeep>
@@ -63,12 +18,6 @@
         <artifactNumToKeep>12</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
-#end
-##
-## ParametersDefinitionProperty
-## Use child template and iteration
-##
-#if( ${job.parametersDefinition} && "true" == ${job.parametersDefinition} )
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.ChoiceParameterDefinition>
@@ -88,7 +37,6 @@
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
-#end
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
         <hudson.triggers.TimerTrigger>
