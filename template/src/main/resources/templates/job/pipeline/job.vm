@@ -60,22 +60,24 @@
   <description>${job.description}</description>
   <keepDependencies>${job.keepDependencies}</keepDependencies>
   <properties>
+    <!--
     <io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty plugin="openshift-sync@0.0.17">
       <uid></uid>
       <namespace></namespace>
       <name></name>
       <resourceVersion></resourceVersion>
     </io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty>
+    -->
 ##
 ## Discard old builds
 ##
 #if ( ${job.discardOldBuilds} && "true" == ${job.discardOldBuilds} )
     <jenkins.model.BuildDiscarderProperty>
       <strategy class="hudson.tasks.LogRotator">
-        <daysToKeep>5</daysToKeep>
-        <numToKeep>10</numToKeep>
-        <artifactDaysToKeep>6</artifactDaysToKeep>
-        <artifactNumToKeep>12</artifactNumToKeep>
+        <daysToKeep>${job.daysToKeep}</daysToKeep>
+        <numToKeep>${job.numToKeep}</numToKeep>
+        <artifactDaysToKeep>${job.artifactDaysToKeep}</artifactDaysToKeep>
+        <artifactNumToKeep>${job.artifactNumToKeep}</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
 #end
