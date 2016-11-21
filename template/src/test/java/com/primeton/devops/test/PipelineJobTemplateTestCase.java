@@ -18,7 +18,6 @@ import org.junit.Assert;
 
 import com.primeton.devops.jenkins.JobApi;
 import com.primeton.devops.util.ServiceLoaderUtil;
-import com.primeton.devops.util.YamlJsonUtil;
 import com.primeton.devops.velocity.ParseTool;
 import com.primeton.devops.velocity.VelocityUtil;
 
@@ -53,11 +52,11 @@ public class PipelineJobTemplateTestCase extends AbstractTestCase {
 		String content = VelocityUtil.merge("/templates/job/pipeline/job.vm", "UTF-8", context, VelocityUtil.getClassResourceLoaderSettings());
 		System.out.println(content);
 		System.out.println();
-		context.remove("parseTool");
-		String json = YamlJsonUtil.toJson(context);
-		System.err.println(json);
-		System.err.println();
-		System.out.println(YamlJsonUtil.json2yaml(json));
+//		context.remove("parseTool");
+//		String json = YamlJsonUtil.toJson(context);
+//		System.err.println(json);
+//		System.err.println();
+//		System.out.println(YamlJsonUtil.json2yaml(json));
 		
 //		final boolean invoke = true;
 		final boolean invoke = false;
