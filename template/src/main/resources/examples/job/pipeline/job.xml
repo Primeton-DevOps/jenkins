@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.9">
   <actions/>
-  <description>项目描述信息</description>
+  <description>This is a test job</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty plugin="openshift-sync@0.0.17">
@@ -12,28 +12,23 @@
     </io.fabric8.jenkins.openshiftsync.BuildConfigProjectProperty>
     <jenkins.model.BuildDiscarderProperty>
       <strategy class="hudson.tasks.LogRotator">
-        <daysToKeep>5</daysToKeep>
-        <numToKeep>10</numToKeep>
-        <artifactDaysToKeep>6</artifactDaysToKeep>
-        <artifactNumToKeep>12</artifactNumToKeep>
+        <daysToKeep>10</daysToKeep>
+        <numToKeep>5</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
-        <hudson.model.ChoiceParameterDefinition>
-          <name>PARAM1</name>
-          <description>参数描述下信息</description>
-          <choices class="java.util.Arrays$ArrayList">
-            <a class="string-array">
-              <string>yes</string>
-              <string>no</string>
-            </a>
-          </choices>
-        </hudson.model.ChoiceParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>param1</name>
+          <description>This is a test parameter.</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
         <hudson.model.StringParameterDefinition>
-          <name>PARAM2</name>
-          <description>参数描述信息</description>
-          <defaultValue>enable</defaultValue>
+          <name>param2</name>
+          <description>This is a test parameter.</description>
+          <defaultValue>Jenkins Pipleline Job</defaultValue>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
@@ -42,35 +37,33 @@
         <hudson.triggers.TimerTrigger>
           <spec>H/59 * * * *</spec>
         </hudson.triggers.TimerTrigger>
-        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.23.1">
-          <spec></spec>
-        </com.cloudbees.jenkins.GitHubPushTrigger>
       </triggers>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
   </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
-    <script>node {
-    stage(&quot;SCM&quot;) {
-        // Auto generate by apache velocity
-// jenkins git plugin default value
-// branch: master
-// changelog: true
-// credentialsId: none
-// poll: true
-git \
-  changelog: false, \
-  poll: false, \
-  url: &apos;https://github.com/Primeton-DevOps/jenkins.git&apos;
+    <script>
 
-    }
-    
-    stage(&quot;sh&quot;) {
-        sh returnStatus: true, \
-        script: &apos;&apos;&apos;ifconfig
-        ps -ef|grep java&apos;&apos;&apos;
+node {
 
-    }
-}</script>
+  stage('Build Maven Source') {
+    git \
+      branch: '1.0', \
+      changelog: false, \
+      url: 'https://github.com/Primeton-DevOps/test.git'
+
+    sh \
+      returnStatus: true, \
+      script: '''echo ${param1} &amp;&amp; echo ${param2} &amp;&amp; mvn clean package -s ~/.m2/settings.xml'''
+
+    echo 'Build success'
+  }
+
+  stage('Hello Stage') {
+    echo "Hello World!"
+  }
+}
+	
+    </script>
     <sandbox>true</sandbox>
   </definition>
   <triggers/>
