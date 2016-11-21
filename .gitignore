@@ -15,6 +15,7 @@ logs/
 
 ### Velocity ###
 velocity.log
+velocity.log.*
 
 
 ### Eclipse ###

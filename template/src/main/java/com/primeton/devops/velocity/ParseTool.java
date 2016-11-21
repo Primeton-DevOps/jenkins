@@ -20,7 +20,10 @@ import java.util.Map;
 public class ParseTool {
 	
 	private static final ParseTool SINGLETON_INSTANCE = new ParseTool();
-	private static final String PATH_PREFIX = "classpath:";
+	
+	private static final String PATH_PREFIX = "classpath:"; //$NON-NLS-1$
+	
+	public static final String DEFAULT_ENCODING = "UTF-8"; //$NON-NLS-1$
 	
 	/**
 	 * Default. <br>
@@ -58,9 +61,9 @@ public class ParseTool {
 		}
 		if (templateName.startsWith(PATH_PREFIX)) {
 			templateName = templateName.toLowerCase().substring(PATH_PREFIX.length());
-			return VelocityUtil.merge(templateName, "UTF-8", context, VelocityUtil.getClassResourceLoaderSettings());
+			return VelocityUtil.merge(templateName, DEFAULT_ENCODING, context, VelocityUtil.getClassResourceLoaderSettings());
 		}
-		return VelocityUtil.merge(templateName, "UTF-8", context, VelocityUtil.getFileResourceLoaderSettings());
+		return VelocityUtil.merge(templateName, DEFAULT_ENCODING, context, VelocityUtil.getFileResourceLoaderSettings());
 	}
 
 }
