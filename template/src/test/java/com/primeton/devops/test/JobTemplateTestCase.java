@@ -1,7 +1,5 @@
 /*******************************************************************************
  *
- *==============================================================================
- *
  * Copyright (c) 2001-2016 Primeton Technologies, Ltd.
  * All rights reserved.
  * 
@@ -156,7 +154,7 @@ public class JobTemplateTestCase extends AbstractTestCase {
 		steps.add(step3);
 		step3.put("codeType", "general"); // or not put
 		//step3.put("script", "sh '''binary=`find . -name test.war`\nif [ -f ${binary} ]; then\n\techo 'Build success.'\nelse\necho 'Build failed.'\nfi'''");
-		step3.put("script", "echo 'Build success,'");
+		step3.put("script", "echo 'Build success'");
 		
 		// other steps
 		
