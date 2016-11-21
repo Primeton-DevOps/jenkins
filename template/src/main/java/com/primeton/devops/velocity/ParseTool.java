@@ -17,22 +17,22 @@ import java.util.Map;
  *
  * @author zhongwen (mailto:zhongwen@primeton.com)
  */
-public class ParseUtil {
+public class ParseTool {
 	
-	private static final ParseUtil SINGLETON_INSTANCE = new ParseUtil();
+	private static final ParseTool SINGLETON_INSTANCE = new ParseTool();
 	private static final String PATH_PREFIX = "classpath:";
 	
 	/**
 	 * Default. <br>
 	 */
-	private ParseUtil() {
+	private ParseTool() {
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public static ParseUtil getSingleton() {
+	public static ParseTool getSingleton() {
 		return SINGLETON_INSTANCE;
 	}
 	

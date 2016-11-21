@@ -1,8 +1,6 @@
 ##
 ## pipeline job velocity templates
 ##
-## parseUtil
-## 
 ## velocity code
 #if ( !${job.keepDependencies} )
 #set( ${job.keepDependencies} = "false" )
@@ -88,7 +86,8 @@
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
 #foreach ( $param in ${job.parameters} )
-#set ( $content = ${parseUtil.merge("classpath:/templates/job/parameter/${param.type}.vm", ${param})} )        
+#set ( $paramConfig = ${parseTool.merge("classpath:/templates/job/parameter/${param.type}.vm", ${param})} )        
+${paramConfig}
 #end
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
@@ -100,8 +99,8 @@
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
       <triggers>
 #foreach ( $trigger in ${job.triggers} )
-#set ( $content = ${parseUtil.merge("classpath:/templates/job/trigger/${trigger.type}.vm", ${trigger})} )
-${content}
+#set ( $triggerConfig = ${parseTool.merge("classpath:/templates/job/trigger/${trigger.type}.vm", ${trigger})} )
+${triggerConfig}
 #end
       </triggers>
     </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
@@ -111,7 +110,7 @@ ${content}
 ## Pipeline Job
 ##
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.23">
-    <script>${pipeline.script}</script>
+    <script>'''${pipeline.script}'''</script>
     <sandbox>${pipeline.sandbox}</sandbox>
   </definition>
   <triggers/>
