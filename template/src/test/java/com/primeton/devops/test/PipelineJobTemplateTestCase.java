@@ -158,6 +158,19 @@ public class PipelineJobTemplateTestCase extends AbstractTestCase {
 		
 		// other steps
 		
+		// -----------------------------------------------
+		
+		Map<String, Object> stage2 = new HashMap<>();
+		stages.add(stage2);
+		stage2.put("name", "Hello Stage");
+		List<Map<String, Object>> steps2 = new ArrayList<>();
+		stage2.put("steps", steps2);
+		
+		Map<String, Object> step21 = new HashMap<>();
+		steps2.add(step21);
+		step21.put("codeType", "general");
+		step21.put("script", "echo \"Hello World!\"");
+		
 		return settings;
 	}
 
