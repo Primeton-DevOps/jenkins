@@ -1,0 +1,72 @@
+{
+  "pipeline": {
+    "sandbox": "true",
+    "codeType": "stage",
+    "stages": [
+      {
+        "name": "Build Maven Source",
+        "steps": [
+          {
+            "pluginName": "git",
+            "changelog": "false",
+            "branch": "1.0",
+            "codeType": "plugin",
+            "url": "https://github.com/Primeton-DevOps/test.git"
+          },
+          {
+            "returnStdout": "false",
+            "pluginName": "sh",
+            "encoding": "UTF-8",
+            "returnStatus": "true",
+            "codeType": "plugin",
+            "script": "echo ${param1} &amp;&amp; echo ${param2} &amp;&amp; mvn clean package -s ~/.m2/settings.xml"
+          },
+          {
+            "codeType": "general",
+            "script": "echo 'Build success'"
+          }
+        ]
+      },
+      {
+        "name": "Hello Stage",
+        "steps": [
+          {
+            "codeType": "general",
+            "script": "echo \"Hello World!\""
+          }
+        ]
+      }
+    ]
+  },
+  "job": {
+    "artifactNumToKeep": "-1",
+    "artifactDaysToKeep": "-1",
+    "discardOldBuilds": "true",
+    "parametersDefinition": "true",
+    "description": "This is a test job",
+    "numToKeep": 5,
+    "daysToKeep": 10,
+    "triggers": [
+      {
+        "spec": "H/59 * * * *",
+        "type": "Time"
+      }
+    ],
+    "parameters": [
+      {
+        "description": "This is a test parameter.",
+        "name": "param1",
+        "defaultValue": "true",
+        "type": "Boolean"
+      },
+      {
+        "description": "This is a test parameter.",
+        "name": "param2",
+        "defaultValue": "Jenkins Pipleline Job",
+        "type": "String"
+      }
+    ],
+    "buildTriggers": "true",
+    "keepDependencies": "false"
+  }
+}
