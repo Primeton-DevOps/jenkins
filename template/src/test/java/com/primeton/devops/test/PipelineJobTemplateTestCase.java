@@ -170,10 +170,10 @@ public class PipelineJobTemplateTestCase extends AbstractTestCase {
 		steps.add(step2);
 		step2.put("codeType", "plugin");
 		step2.put("pluginName", "sh");
-		step2.put("returnStdout", "true");
-		step2.put("returnStatus", "false");
+		step2.put("returnStdout", "false");
+		step2.put("returnStatus", "true");
 		step2.put("encoding", "UTF-8");
-		step2.put("script", "echo ${param1} && echo ${param2} && mvn clean package -s ~/.m2/settings.xml");
+		step2.put("script", "echo ${param1} && echo ${param2} && mvn clean package -s ~/.m2/settings.xml".replaceAll("&", "&amp;"));
 		
 		Map<String, Object> step3 = new HashMap<>();
 		steps.add(step3);
