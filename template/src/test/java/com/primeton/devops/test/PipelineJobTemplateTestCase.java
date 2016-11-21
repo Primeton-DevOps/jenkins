@@ -12,7 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import org.junit.Assert;
+
+import com.primeton.devops.jenkins.JobApi;
+import com.primeton.devops.util.ServiceLoaderUtil;
 import com.primeton.devops.velocity.ParseTool;
 import com.primeton.devops.velocity.VelocityUtil;
 
@@ -22,7 +27,9 @@ import com.primeton.devops.velocity.VelocityUtil;
  * @author zhongwen (mailto:zhongwen@primeton.com)
  */
 public class PipelineJobTemplateTestCase extends AbstractTestCase {
-
+	
+	private final String jobName = "job-" + uid;
+	
 	/* (non-Javadoc)
 	 * @see com.primeton.devops.test.AbstractTestCase#test()
 	 */
@@ -44,6 +51,24 @@ public class PipelineJobTemplateTestCase extends AbstractTestCase {
 		
 		String content = VelocityUtil.merge("/templates/job/pipeline/job.vm", "UTF-8", context, VelocityUtil.getClassResourceLoaderSettings());
 		System.out.println(content);
+		
+		final boolean invoke = true;
+//		final boolean invoke = false;
+		if (!invoke) {
+			return;
+		}
+		
+		// jenkins rest (newItem -> build -> delete)
+		JobApi jobApi = ServiceLoaderUtil.load(JobApi.class);
+		Assert.assertNotNull(jobApi);
+		
+		jobApi.createJob(jobName, content);
+		
+		TimeUnit.SECONDS.sleep(30);
+		
+		jobApi.runJob(jobName);
+		
+		TimeUnit.SECONDS.sleep(90);
 	}
 	
 	/**
@@ -148,7 +173,7 @@ public class PipelineJobTemplateTestCase extends AbstractTestCase {
 		step2.put("returnStdout", "true");
 		step2.put("returnStatus", "false");
 		step2.put("encoding", "UTF-8");
-		step2.put("script", "mvn clean package -s ~/.m2/settings.xml");
+		step2.put("script", "echo ${param1} && echo ${param2} && mvn clean package -s ~/.m2/settings.xml");
 		
 		Map<String, Object> step3 = new HashMap<>();
 		steps.add(step3);
@@ -173,5 +198,5 @@ public class PipelineJobTemplateTestCase extends AbstractTestCase {
 		
 		return settings;
 	}
-
+	
 }

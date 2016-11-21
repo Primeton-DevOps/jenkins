@@ -13,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +30,8 @@ import org.junit.Test;
 public abstract class AbstractTestCase {
 	
 	protected static final String PATH_PREFIX = "classpath:"; //$NON-NLS-1$
+	
+	protected final String uid = new SimpleDateFormat("yyyyMMddHHmmSS").format(new Date());
 
 	@Before
 	public void init() {
