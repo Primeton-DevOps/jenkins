@@ -1,4 +1,10 @@
 ##
+## Vendor
+##
+#if ( ! $vendor )
+#set ( $vendor = "Primeton" )
+#end
+##
 ## pipeline job velocity templates
 ##
 ## velocity code
@@ -50,6 +56,10 @@
 ## job configuration file content
 ##
 <?xml version='1.0' encoding='UTF-8'?>
+##
+## Copyright
+##
+#include ( "/templates/copyright/xml/${vendor}.xml" )
 <flow-definition plugin="workflow-job@2.9">
   <actions/>
 ##
