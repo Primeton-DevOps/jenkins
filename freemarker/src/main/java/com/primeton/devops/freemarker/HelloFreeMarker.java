@@ -23,10 +23,11 @@ public class HelloFreeMarker {
 		
 		Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
 
-		// Windows
-		cfg.setDirectoryForTemplateLoading(new File("D:\\github\\jenkins\\freemarker\\src\\main\\resources\\templates"));
-		// MacOS
-//		cfg.setDirectoryForTemplateLoading(new File("~/github/jenkins/freemarker/src/main/resources/templates"));
+		if (SystemUtil.isWindows()) {
+			cfg.setDirectoryForTemplateLoading(new File("D:\\github\\jenkins\\freemarker\\src\\main\\resources\\templates"));
+		} else {
+			cfg.setDirectoryForTemplateLoading(new File(System.getProperty("user.home") + "/github/jenkins/freemarker/src/main/resources/templates"));
+		}
 
 		cfg.setDefaultEncoding("UTF-8");
 		
