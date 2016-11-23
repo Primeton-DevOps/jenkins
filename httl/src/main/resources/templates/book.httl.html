@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<title>${title}</title>
+	</head>
+    <body>
+        <!--#if(books)-->
+        <table>
+            <!--#for(Book book : books)-->
+            <tr>
+                <td>${book.snid}</td>
+                <td>${book.name}</td>
+            </tr>
+            <!--#end-->
+        </table>
+        <!--#end-->
+        ${new ParseTool().parse("HTTL")}
+    </body>
+</html>
