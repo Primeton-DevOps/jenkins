@@ -311,7 +311,7 @@ public class HttpClientUtil implements Constants {
 			return null;
 		}
 		HttpEntity entity = response.getEntity();
-		return null == entity ? null : EntityUtils.toString(entity);
+		return null == entity ? null : EntityUtils.toString(entity, "UTF-8"); //$NON-NLS-1$
 		
 		/*
 		if (null == entity) {
