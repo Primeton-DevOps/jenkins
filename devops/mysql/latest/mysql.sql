@@ -2005,7 +2005,7 @@ create table DPS_R_UC_ROLE_TYPE
    CREATE_USER          varchar(64),
    CREATE_TIME          datetime,
    UPDATE_USER          varchar(64),
-   UPDATE_TIME          datatime,
+   UPDATE_TIME          datetime,
    TENANT_ID            varchar(64) comment '租户ID',
    primary key (ROLE_ID)
 );
